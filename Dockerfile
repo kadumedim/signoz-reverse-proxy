@@ -6,7 +6,7 @@ ARG $PORT
 ARG $TARGET_HOST
 ARG $TARGET_PORT
 
-# Explicitly listen on IPv4 and connect to IPv6
-CMD echo "Attempting to resolve ${TARGET_HOST}" && \
-    dig $TARGET_HOST && \
-    socat TCP4-LISTEN:$PORT,fork,reuseaddr TCP6:[$TARGET_HOST]:$TARGET_PORT
+# Use hostname with debugging enabled
+CMD echo "Starting SOCAT proxy on port 9000" && \
+    echo "Targeting host: ${TARGET_HOST} port: ${TARGET_PORT}" && \
+    socat -d -d TCP4-LISTEN:9000,fork,reuseaddr TCP:${TARGET_HOST}:${TARGET_PORT}
