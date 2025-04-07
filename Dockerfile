@@ -1,14 +1,10 @@
-FROM haproxy:2.8-alpine
+FROM haproxy:latest
 
-# Install envsubst for environment variable substitution
-RUN apk add --no-cache gettext
+COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg.template
 
-# Create a simple config template
-COPY haproxy.cfg.template /
+# Entry script to substitute environment variables
+COPY docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
 
-# Create startup script
-COPY start.sh /
-RUN chmod +x /start.sh
-
-# Run the startup script
-CMD ["/start.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
