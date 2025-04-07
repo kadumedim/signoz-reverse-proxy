@@ -5,9 +5,6 @@
 
 # Listen on the port provided by Railway
 :{$PORT} {
-  # TCP proxy configuration
-  tls off  # Disable TLS for internal proxy communication
-  
   # Forward connections to your Clickhouse server using env vars
   reverse_proxy {
     to {$CLICKHOUSE_HOST}:{$CLICKHOUSE_PORT}
