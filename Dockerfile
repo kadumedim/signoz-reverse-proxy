@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-RUN apk add --no-cache socat
+RUN apk add --no-cache socat bind-tools
 
 ARG $PORT
 ARG $TARGET_HOST
