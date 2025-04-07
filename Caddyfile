@@ -1,0 +1,21 @@
+{
+  # Global options
+  debug  # Optional: helpful during initial setup
+}
+
+# Listen on the port provided by Railway
+:{$PORT} {
+  # TCP proxy configuration
+  tls off  # Disable TLS for internal proxy communication
+  
+  # Forward connections to your Clickhouse server using env vars
+  reverse_proxy {
+    to {$CLICKHOUSE_HOST}:{$CLICKHOUSE_PORT}
+    transport tcp {
+      # TCP-specific options
+      keepalive 30s
+      # You can tune these values based on your needs
+      tls_insecure_skip_verify  # Only if needed for internal services
+    }
+  }
+}
