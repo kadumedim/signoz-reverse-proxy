@@ -1,6 +1,7 @@
 FROM haproxy:latest
 
-COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg.template
+# Copy the config file
+COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 
-# Use a shell command directly as the entrypoint
-ENTRYPOINT ["/bin/sh", "-c", "envsubst < /usr/local/etc/haproxy/haproxy.cfg.template > /usr/local/etc/haproxy/haproxy.cfg && exec haproxy -f /usr/local/etc/haproxy/haproxy.cfg"]
+# Run HAProxy
+CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
