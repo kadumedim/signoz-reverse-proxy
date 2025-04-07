@@ -1,10 +1,12 @@
-FROM caddy:2.7.5-alpine
+FROM haproxy:2.8-alpine
 
-# Create directory for Caddyfile
-WORKDIR /etc/caddy
+# Copy in the config file
+COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 
-# Copy in the Caddyfile
-COPY Caddyfile /etc/caddy/Caddyfile
+# Set environment variables with default values
+ENV PORT=8000
+ENV CLICKHOUSE_HOST=localhost
+ENV CLICKHOUSE_PORT=9000
 
-# Run Caddy with the Caddyfile
-CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile"]
+# Start HAProxy with environment variable support
+CMD sh -c "sed -i \"s/\\\${PORT}/$PORT/g; s/\\\${CLICKHOUSE_HOST}/$CLICKHOUSE_HOST/g; s/\\\${CLICKHOUSE_PORT}/$CLICKHOUSE_PORT/g\" /usr/local/etc/haproxy/haproxy.cfg && haproxy -f /usr/local/etc/haproxy/haproxy.cfg"
